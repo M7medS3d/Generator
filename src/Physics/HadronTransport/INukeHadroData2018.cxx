@@ -156,12 +156,19 @@ INukeHadroData2018::~INukeHadroData2018()
   delete fhN2dXSecGamPimP_Inelas;
   delete fhN2dXSecKpN_CEx;
   
-//  delete TPipA_Tot; 
+ // delete TPipA_Tot;
   delete TfracPipA_Abs;
   delete TfracPipA_CEx;
 //  delete TfracPipA_Elas;
   delete TfracPipA_Inelas;
   delete TfracPipA_PiPro;
+    
+    delete TPipA_Tot;
+    delete TPipA_Abs;
+    delete TPipA_CEx;
+    delete TPipA_Inelas;
+    delete TPipA_PiPro;
+    
   
   // K+A x-section fraction splines
   delete fFracKA_Tot;
@@ -826,12 +833,12 @@ void INukeHadroData2018::LoadCrossSections(void)
     TGraphs_file.Open(filename.c_str(), "RECREATE");
   }
 
-  /*
+ 
   // kIHNFtTot,   pip + A                                            PipA_Tot
   {
-    const int pipATot_nfiles = 22;
-    const int pipATot_nuclei[pipATot_nfiles] = {1, 2, 3, 4, 6, 7, 9, 12, 16, 27, 28, 32, 40, 48, 56, 58, 63, 93, 120, 165, 181, 209};
-    const int pipATot_npoints = 203;
+    const int pipATot_nfiles = 7;
+    const int pipATot_nuclei[pipATot_nfiles] = {12,27 ,3,56, 93,209,7};
+    const int pipATot_npoints = 294;
 
     TPipA_Tot = new TGraph2D(pipATot_npoints);
     TPipA_Tot->SetNameTitle("TPipA_Tot","TPipA_Tot");
@@ -847,9 +854,12 @@ void INukeHadroData2018::LoadCrossSections(void)
       TGraph * buff = new TGraph(ADep_datafile.str().c_str());
       buff->SetNameTitle("buff","buff");
       for(int i=0; i < buff->GetN(); i++) {
-	buff -> GetPoint(i,x,y);
-	TPipA_Tot -> SetPoint(ipoint,(double)nucleus,x,y);
-	ipoint++;
+	  buff -> GetPoint(i,x,y);
+      if (y > 0) {
+        TPipA_Tot->SetPoint(ipoint, (double)nucleus, x, log(y));
+        ipoint++;
+      }
+
       }
       delete buff;
     }
@@ -858,7 +868,7 @@ void INukeHadroData2018::LoadCrossSections(void)
       TPipA_Tot -> Write("TPipA_Tot"); // TPipA_Tot will be _key_ name
     }
   }
-  */
+
 
   // kIHNFtAbs, pip + A                                                            PipA_Abs_frac
   {
@@ -929,11 +939,11 @@ void INukeHadroData2018::LoadCrossSections(void)
 
   // kIHNFtCEx, pip + A                                                            PipA_CEx (just for developmental purposes)
   {
-    TGraph2D * TPipA_CEx;
 
-    const int pipACEx_nfiles = 18;
-    const int pipACEx_nuclei[pipACEx_nfiles] = {1, 2, 3, 4, 7, 9, 12, 16, 27, 48, 56, 58, 63, 93, 120, 165, 181, 209};
-    const int pipACEx_npoints = 129;
+
+    const int pipACEx_nfiles = 7;
+    const int pipACEx_nuclei[pipACEx_nfiles] = {3, 27 , 12 , 56 , 93 , 209 , 7};
+    const int pipACEx_npoints = 294;
 
     TPipA_CEx = new TGraph2D(pipACEx_npoints);
     TPipA_CEx->SetNameTitle("TPipA_CEx","TPipA_CEx");
@@ -949,9 +959,11 @@ void INukeHadroData2018::LoadCrossSections(void)
       TGraph * buff = new TGraph(ADep_datafile.str().c_str());
       buff->SetNameTitle("buff","buff");
       for(int i=0; i < buff->GetN(); i++) {
-	buff -> GetPoint(i,x,y);
-	TPipA_CEx -> SetPoint(ipoint,(double)nucleus,x,y);
-	ipoint++;
+	     buff -> GetPoint(i,x,y);
+          if(y>0){
+              TPipA_CEx -> SetPoint(ipoint,(double)nucleus,x,log(y));
+              ipoint++;
+          }
       }
       delete buff;
     }
@@ -959,17 +971,16 @@ void INukeHadroData2018::LoadCrossSections(void)
     if (saveTGraphsToFile) {
       TPipA_CEx -> Write("TPipA_CEx");
     }
-    delete TPipA_CEx;
+    
    
   }
 
   // kIHNFtAbs, pip + A                                                            PipA_Abs (just for developmental purposes)
   {
-    TGraph2D * TPipA_Abs;
 
-    const int pipAAbs_nfiles = 18;
-    const int pipAAbs_nuclei[pipAAbs_nfiles] = {1, 2, 3, 4, 7, 9, 12, 16, 27, 48, 56, 58, 63, 93, 120, 165, 181, 209};
-    const int pipAAbs_npoints = 111;
+    const int pipAAbs_nfiles = 7;
+      const int pipAAbs_nuclei[pipAAbs_nfiles] = {3, 27 , 12 , 56 , 93 , 209 , 7};
+    const int pipAAbs_npoints = 294;
 
     TPipA_Abs = new TGraph2D(pipAAbs_npoints);
     TPipA_Abs->SetNameTitle("TPipA_Abs","TPipA_Abs");
@@ -985,9 +996,11 @@ void INukeHadroData2018::LoadCrossSections(void)
       TGraph * buff = new TGraph(ADep_datafile.str().c_str());
       buff->SetNameTitle("buff","buff");
       for(int i=0; i < buff->GetN(); i++) {
-	buff -> GetPoint(i,x,y);
-	TPipA_Abs -> SetPoint(ipoint,(double)nucleus,x,y);
-	ipoint++;
+          buff -> GetPoint(i,x,y);
+          if(y>0){
+              TPipA_Abs -> SetPoint(ipoint,(double)nucleus,x,log(y));
+              ipoint++;
+          }
       }
       delete buff;
     }
@@ -995,7 +1008,6 @@ void INukeHadroData2018::LoadCrossSections(void)
     if (saveTGraphsToFile) {
       TPipA_Abs -> Write("TPipA_Abs");
     }
-    delete TPipA_Abs;
    
   }
 
@@ -1036,11 +1048,10 @@ void INukeHadroData2018::LoadCrossSections(void)
 
   // kIHNFtInelas, pip + A                                                            PipA_Inelas (just for developmental purposes)
   {
-    TGraph2D * TPipA_Inelas;
 
-    const int pipAInelas_nfiles = 20;
-    const int pipAInelas_nuclei[pipAInelas_nfiles] = {1, 2, 3, 4, 7, 9, 12, 16, 27, 40, 48, 56, 58, 63, 93, 120, 165, 181, 208, 209};
-    const int pipAInelas_npoints = 118;
+    const int pipAInelas_nfiles = 7;
+    const int pipAInelas_nuclei[pipAInelas_nfiles] = {3, 27 , 12 , 56 , 93 , 209 , 7};
+    const int pipAInelas_npoints = 294;
 
     TPipA_Inelas = new TGraph2D(pipAInelas_npoints);
     TPipA_Inelas->SetNameTitle("TPipA_Inelas","TPipA_Inelas");
@@ -1057,8 +1068,10 @@ void INukeHadroData2018::LoadCrossSections(void)
       buff->SetNameTitle("buff","buff");
       for(int i=0; i < buff->GetN(); i++) {
 	buff -> GetPoint(i,x,y);
-	TPipA_Inelas -> SetPoint(ipoint,(double)nucleus,x,y);
-	ipoint++;
+          if(y>0){
+              TPipA_Inelas -> SetPoint(ipoint,(double)nucleus,x,log(y));
+              ipoint++;
+          }
       }
       delete buff;
     }
@@ -1066,8 +1079,42 @@ void INukeHadroData2018::LoadCrossSections(void)
     if (saveTGraphsToFile) {
       TPipA_Inelas -> Write("TPipA_Inelas");
     }
-    delete TPipA_Inelas;
   }
+    
+    // kIHNFtPiPro, pip + A                                                            PipA_pipro (just for developmental purposes)
+    {
+
+      const int pipApipro_nfiles = 6;
+      const int pipApipro_nuclei[pipApipro_nfiles] = { 27 , 12 , 56 , 93 , 209 , 7};
+      const int pipAInelas_npoints = 252;
+
+        TPipA_PiPro = new TGraph2D(pipAInelas_npoints);
+        TPipA_PiPro->SetNameTitle("TPipA_PiPro","TPipA_PiPro");
+        TPipA_PiPro->SetDirectory(0);
+
+      int ipoint=0;
+      double x, y;
+
+      for(int ifile=0; ifile < pipApipro_nfiles; ifile++) {
+        ostringstream ADep_datafile;
+        int nucleus = pipApipro_nuclei[ifile];
+        ADep_datafile << data_dir << "/tot_xsec/pipA_pipro/pip" << nucleus << "_pipro.txt";
+        TGraph * buff = new TGraph(ADep_datafile.str().c_str());
+        buff->SetNameTitle("buff","buff");
+        for(int i=0; i < buff->GetN(); i++) {
+            buff -> GetPoint(i,x,y);
+            if(y>0){
+                TPipA_PiPro -> SetPoint(ipoint,(double)nucleus,x,log(y));
+                ipoint++;
+            }
+        }
+        delete buff;
+      }
+
+      if (saveTGraphsToFile) {
+          TPipA_PiPro -> Write("TPipA_PiPro");
+      }
+    }
 
 
   /*
@@ -1388,19 +1435,35 @@ double INukeHadroData2018::FracADep(int hpdgc, INukeFateHA_t fate, double ke, in
 
   // Handle pions (currently the same cross sections are used for pi+, pi-, and pi0)
   if ( hpdgc == kPdgPiP || hpdgc == kPdgPiM || hpdgc == kPdgPi0 ) {
-
-    double frac_cex = TfracPipA_CEx->Interpolate(targA, ke);
-    //double frac_elas = TfracPipA_Elas->Interpolate(targA, ke);
-    double frac_inelas = TfracPipA_Inelas->Interpolate(targA, ke);
-    double frac_abs = TfracPipA_Abs->Interpolate(targA, ke);
-    double frac_pipro = TfracPipA_PiPro->Interpolate(targA, ke);
+      // get log fate cross sections
+    double log_cex_xs = TPipA_CEx->Interpolate(targA, ke);
+    double log_inelas_xs = TPipA_Inelas->Interpolate(targA, ke);
+    double log_abs_xs = TPipA_Abs->Interpolate(targA, ke);
+    double log_pipro_xs = TPipA_PiPro->Interpolate(targA, ke);
+    double log_tot_xs = TPipA_Tot->Interpolate(targA, ke);
+      
+      
+      // get cross sections
+      double cex_xs     = exp(log_cex_xs);
+      double inelas_xs  = exp(log_inelas_xs);
+      double abs_xs     = exp(log_abs_xs);
+      double pipro_xs   = exp(log_pipro_xs);
+      double tot_xs     = exp(log_tot_xs);
+      
+      // construct ratios
+      
+      double frac_cex = cex_xs / tot_xs ;
+      double frac_inelas = inelas_xs / tot_xs ;
+      double frac_abs = abs_xs / tot_xs ;
+      double frac_pipro = pipro_xs / tot_xs ;
+      
+    
 
     // Protect against unitarity violation due to interpolation problems
     // by renormalizing all available fate fractions to unity.
     double total = frac_cex + frac_inelas + frac_abs + frac_pipro; // + frac_elas
 
-    if ( fate == kIHAFtCEx ) return frac_cex / total;
-  //else if ( fate == kIHAFtElas   ) return frac_elas / total;
+    if ( fate == kIHAFtCEx )         return frac_cex / total;
     else if ( fate == kIHAFtInelas ) return frac_inelas / total;
     else if ( fate == kIHAFtAbs    ) return frac_abs / total;
     else if ( fate == kIHAFtPiProd ) return frac_pipro / total;
@@ -1826,3 +1889,4 @@ while(iter)
   return val;
 }
 //___________________________________________________________________________
+

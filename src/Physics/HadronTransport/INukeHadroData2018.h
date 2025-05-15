@@ -217,12 +217,18 @@ private:
   Spline * fFracPA_Cmp;
   Spline * fFracNA_Cmp;
 
-//  TGraph2D * TPipA_Tot;
+ // TGraph2D * TPipA_Tot;
   TGraph2D * TfracPipA_CEx;
 //  TGraph2D * TfracPipA_Elas;
   TGraph2D * TfracPipA_Inelas;
   TGraph2D * TfracPipA_Abs;
   TGraph2D * TfracPipA_PiPro;
+    
+     TGraph2D * TPipA_Tot;
+     TGraph2D * TPipA_CEx;
+     TGraph2D * TPipA_Inelas;
+     TGraph2D * TPipA_Abs;
+     TGraph2D * TPipA_PiPro;
 
   BLI2DNonUnifGrid * fhN2dXSecPP_Elas;
   BLI2DNonUnifGrid * fhN2dXSecNP_Elas;
@@ -255,4 +261,5 @@ private:
 
 }      // genie namespace
 #endif //_INTRANUKE_HADRON_CROSS_SECTIONS_2015_H_
+
 

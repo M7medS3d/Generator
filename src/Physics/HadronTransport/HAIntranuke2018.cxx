@@ -263,6 +263,37 @@ INukeFateHA_t HAIntranuke2018::HadronFateHA(const GHepParticle * p) const
      if (pdgc==kPdgPiP || pdgc==kPdgPiM) frac_abs *= fChPionFracAbsScale;
      if (pdgc==kPdgPi0) frac_abs *= fNeutralPionFracAbsScale;
      frac_piprod *= fPionFracPiProdScale;
+     
+	
+	// Flag to enable or disable π⁰ ratio corrections
+	bool apply_pi0_ratio_correction = true;
+
+	if (apply_pi0_ratio_correction && pdgc == kPdgPi0) {
+
+	    // Cap the kinetic energy at 1000 MeV for the correction calculation
+	    double ke_ratio = (ke > 1000.0) ? 1000.0 : ke;
+
+	    // Define correction scale factors as a function of kinetic energy (in MeV)
+	    double ratio_cex    =  0.0008702 * ke_ratio + 1.9047;
+	    double ratio_abs    =  0.0003291 * ke_ratio + 0.82617;
+	    double ratio_inel   = -0.0003209 * ke_ratio + 0.837764;
+	    double ratio_piprod =  0.0004402 * ke_ratio + 0.47418;
+
+	    // Apply the corrections only if kinetic energy is below 1000 MeV
+	
+	    frac_cex  *= ratio_cex;
+  	    frac_abs  *= ratio_abs;
+	    frac_inel *= ratio_inel;
+
+	    // Apply piprod correction only if KE is above 400 MeV
+	    if (ke > 400.0) {
+		    frac_piprod *= ratio_piprod;
+            }
+	   
+	}
+
+     
+     
 
      double frac_rescale = 1./(frac_cex + frac_inel + frac_abs + frac_piprod);
 
