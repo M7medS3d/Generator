@@ -21,16 +21,16 @@
           data and extrapolations, and INC model results from Mashnik et al.
           for h+Fe56.
 
-\author   Costas Andreopoulos <costas.andreopoulos \at stfc.ac.uk>, Rutherford Lab.
+\author   Costas Andreopoulos <c.andreopoulos \at cern.ch>, Rutherford Lab.
           Steve Dytman <dytman+@pitt.edu>, Pittsburgh Univ.
 	  Aaron Meyer <asm58@pitt.edu>, Pittsburgh Univ.
 	  Alex Bell, Pittsburgh Univ.
 
 \created  February 01, 2007
 
-\cpright  Copyright (c) 2003-2019, The GENIE Collaboration
+\cpright  Copyright (c) 2003-2024, The GENIE Collaboration
           For the full text of the license visit http://copyright.genie-mc.org
-          or see $GENIE/LICENSE
+          
 
 */
 //____________________________________________________________________________
@@ -217,12 +217,18 @@ private:
   Spline * fFracPA_Cmp;
   Spline * fFracNA_Cmp;
 
-//  TGraph2D * TPipA_Tot;
+ // TGraph2D * TPipA_Tot;
   TGraph2D * TfracPipA_CEx;
 //  TGraph2D * TfracPipA_Elas;
   TGraph2D * TfracPipA_Inelas;
   TGraph2D * TfracPipA_Abs;
   TGraph2D * TfracPipA_PiPro;
+    
+     TGraph2D * TPipA_Tot;
+     TGraph2D * TPipA_CEx;
+     TGraph2D * TPipA_Inelas;
+     TGraph2D * TPipA_Abs;
+     TGraph2D * TPipA_PiPro;
 
   BLI2DNonUnifGrid * fhN2dXSecPP_Elas;
   BLI2DNonUnifGrid * fhN2dXSecNP_Elas;
@@ -255,4 +261,5 @@ private:
 
 }      // genie namespace
 #endif //_INTRANUKE_HADRON_CROSS_SECTIONS_2015_H_
+
 
