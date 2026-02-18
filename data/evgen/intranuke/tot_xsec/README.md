@@ -4,7 +4,7 @@ Those results had issues wihch made certain cases (e.g. pi charge exchange for A
 that aren't consistent with the undelying data.  In addition, only CEM03 was available for the first
 effort and it has proven unable to fit data.  Finally, the code was still using pion-nucleus elastic
 cross sections and this has been discontinued.  The new effort (2025) was undertaken by
-Mohamed Ismail (mis90@pitt.edu) and Steve Dytman (dytman@pitt.edu) at Univ., of Pittsburgh
+Mohamed Ismail (mis10@pitt.edu) and Steve Dytman (dytman@pitt.edu) at Univ., of Pittsburgh
 to fix these and other issues.  Dytman should be contacted for all questions.
 
 The normalizing cross sections are now total reaction cross sections instead of the total cross
